@@ -6,19 +6,24 @@ import 'package:musicapp/logic/cubit/music_cubit.dart';
 import 'package:musicapp/screen/homeScreen.dart';
 
 const String homeScreenRoute = '/';
+const String detailScreenRoute = '/DetailScreen';
 
 class Routes {
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
       case homeScreenRoute:
         return MaterialPageRoute(
-          builder: (_) => BlocProvider(
-            create: (context) => MusicCubit(
-              dataProvider: DataProvider(
-                dioClient: DioClient(),
+          builder: (_) => MultiBlocProvider(
+            providers: [
+              BlocProvider(
+                create: (context) => MusicCubit(
+                  dataProvider: DataProvider(
+                    dioClient: DioClient(),
+                  ),
+                ),
               ),
-            ),
-            child: const HomeScreen(),
+            ],
+            child:  HomeScreen(),
           ),
         );
 

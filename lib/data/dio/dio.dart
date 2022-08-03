@@ -2,6 +2,8 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
+import 'package:musicapp/data/modules/songDetail_model.dart';
+import 'package:musicapp/data/modules/songLyrics_model.dart';
 import 'package:musicapp/data/modules/song_model.dart';
 
 
@@ -21,14 +23,25 @@ class DioClient {
     }
   }
 
-  // Future<Song> fetchNewsByCategory(category) async {
-  //   final url = baseURL2 + "/top-headlines?category=" + category + '&apiKey=' + apiKey ;
-  //   try {
-  //     print(url);
-  //      final response = await dio.get(url);
-  //       return Song.fromJson(response.data);
-  //   } on DioError catch (e) {
-  //     throw Exception('Failed News By Category');
-  //   }
-  // }
+  Future<SongDetail> fetchSongByTrackID(trackID) async {
+    final url ="https://api.musixmatch.com/ws/1.1/track.get?track_id=$trackID&apikey=$apiKey";
+    try {
+       final response = await dio.get(url);
+       final jsonR = jsonDecode(response.data);
+      return SongDetail.fromJson(jsonR);
+    } on DioError catch (e) {
+      throw Exception('Failed News By Category');
+    }
+  }
+
+  Future<SongLyrics> fetchSongLyricsByTrackID(trackID) async {
+    final url ="https://api.musixmatch.com/ws/1.1/track.lyrics.get?track_id=$trackID&apikey=$apiKey";
+    try {
+       final response = await dio.get(url);
+       final jsonR = jsonDecode(response.data);
+      return SongLyrics.fromJson(jsonR);
+    } on DioError catch (e) {
+      throw Exception('Failed News By Category');
+    }
+  }
 }
